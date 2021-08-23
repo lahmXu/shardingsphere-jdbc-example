@@ -1,1 +1,1 @@
-# shardingsphere-study
+# shardingsphere-jdbc-example
