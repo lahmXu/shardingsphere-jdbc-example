@@ -1,0 +1,69 @@
+spring:
+  shardingsphere:
+    props:
+      sql-show: true
+      query-with-cipher-comlum: true
+    datasource:
+      names: ds-0,ds-1
+      ds-0:
+        jdbc-url: jdbc:mysql://40.73.16.169:3306/sharding-db0?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: Admin@12345678
+      ds-1:
+        jdbc-url: jdbc:mysql://40.73.16.169:3306/sharding-db1?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: Admin@12345678
+
+    rules:
+      sharding:
+        # 数据库策略
+        default-database-strategy:
+          standard:
+            sharding-column: id
+            sharding-algorithm-name: database-inline
+        binding-tables: tb_user
+        # 广播表表示每个数据库都需要存
+        # broadcast-tables: t_address
+
+        tables:
+          tb_user:
+            actual-data-nodes: ds-$->{0..1}.tb_user_$->{0..1}
+            table-strategy:
+              standard:
+                sharding-column: card_id
+                sharding-algorithm-name: tb-user-inline #分表算法
+            key-generate-strategy:
+              column: id
+              key-generator-name: snowflake
+        # 分片算法配置
+        sharding-algorithms:
+          database-inline:
+            type: INLINE
+            props:
+              algorithm-expression: ds-$->{id % 2}
+          tb-user-inline:
+            type: INLINE
+            props:
+              algorithm-expression: tb_user_$->{card_id % 2}
+        # 随机 key 生成算法配置
+        key-generators:
+          snowflake:
+            type: SNOWFLAKE
+            props:
+              worker-id: 123
+      encrypt:
+        encryptors:
+          encryptor-aes:
+            type: AES
+            props:
+              aes-key-value: khpNXrRnmib5
+        tables:
+          tb_user:
+            columns:
+              cardId:
+                cipherColumn: cardId
+                encryptorName: encryptor-aes
