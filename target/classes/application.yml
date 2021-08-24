@@ -1,8 +1,0 @@
-server:
-  port: 8080
-spring:
-  profiles:
-#    active: readwrite-splitting
-    active: sharding-databases-tables
-#    active: readwrite-splitting
-#    active: readwrite-splitting
