@@ -6,17 +6,17 @@ spring:
     datasource:
       names: ds-0,ds-1
       ds-0:
-        jdbc-url: jdbc:mysql://40.73.16.169:3306/sharding-db0?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/sharding-db0?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
         username: root
-        password: Admin@12345678
+        password:
       ds-1:
-        jdbc-url: jdbc:mysql://40.73.16.169:3306/sharding-db1?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/sharding-db1?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
         username: root
-        password: Admin@12345678
+        password:
 
     rules:
       sharding:
